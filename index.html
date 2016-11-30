@@ -11,6 +11,7 @@
 <!-- Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+<!-- D3 -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 <style>
@@ -38,7 +39,6 @@ var width = 500 - margin.left - margin.right;
 d3.json("data/sample-data.json", function(error, graph) {
     if (error) throw error;
     data = graph.values;
-    console.log(data[0].value * barHeight)
     var height = (barHeight * data.length) + margin.top + margin.bottom;
 
     var chart = d3.select("body").append("svg")
@@ -49,7 +49,7 @@ d3.json("data/sample-data.json", function(error, graph) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var x = d3.scaleLinear()
-        .domain([0, 50])
+        .domain([0, d3.max(data, function(d) { return d.value; })])
         .range([0, width]);
 
     var bar = chart.selectAll("g")
