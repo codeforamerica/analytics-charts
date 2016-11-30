@@ -1,0 +1,11 @@
+{
+    "type": "snapshot",
+    "title": "Case Status",
+    "metric": "percentage",
+    "values": [
+        {"name": "Unknown", "value": 40},
+        {"name": "Served Time Release", "value": 18},
+        {"name": "Sentenced", "value": 95},
+        {"name": "Other Non-Sentenced", "value": 40}
+    ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": ["snapshot"],
+  "title": ["CaseStatusType"],
+  "stat": ["percent"],
+  "values": [
+    {
+      "name": "Other Non-Sentenced",
+      "value": 18.4466
+    },
+    {
+      "name": "Pre Trial",
+      "value": 8.7379
+    },
+    {
+      "name": "Served Time Release",
+      "value": 7.767
+    },
+    {
+      "name": "Sentenced",
+      "value": 47.5728
+    },
+    {
+      "name": "Unknown",
+      "value": 17.4757
+    }
+  ]
+}
