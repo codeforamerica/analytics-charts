@@ -25,6 +25,10 @@
     text-anchor: end;
 }
 
+.chart text.barlabel {
+    fill: white;
+}
+
 .axis {
     color: #000000;
 }
@@ -37,12 +41,13 @@
 
 var margin = {top: 20, right: 10, bottom: 20, left: 175}; // :TODO: set left margin dynamically based on label size
 var labelPad = 5;
-var barHeight = 25
+var barHeight = 25;
 var width = 500 - margin.left - margin.right;
 
-d3.json("data/sample-data.json", function(error, graph) {
+d3.json("data/sample-data.json", function(error, obj) {
     if (error) throw error;
-    data = graph.values;
+    data = obj.values;
+    metric = obj.stat[0];
     var height = (barHeight * data.length) + margin.top + margin.bottom;
 
     var chart = d3.select("body").append("svg")
@@ -55,10 +60,6 @@ d3.json("data/sample-data.json", function(error, graph) {
     var x = d3.scaleLinear()
         .domain([0, d3.max(data, function(d) { return d.value; })])
         .range([0, width]);
-
-    var y = d3.scaleBand()
-        .domain(data.map(function(d) { return d.name; }))
-        .range([0, 123]); // need to figure out how to calculate the actual hight of the chart dynamically
 
     var bar = chart.selectAll("g")
         .data(data)
@@ -73,11 +74,25 @@ d3.json("data/sample-data.json", function(error, graph) {
         .attr("x", function(d) { return x(d.value) - labelPad; })
         .attr("y", barHeight / 2)
         .attr("dy", ".35em")
-        .text(function(d) { return d.value; });
+        .attr("class", "barlabel")
+        .text(function(d) {
+            if (metric == "percent") {
+                return d3.format(".1f")(d.value) + "%"
+            }
+            return d.value;
+        });
+
+    var y = d3.scaleBand()
+        .domain(data.map(function(d) { return d.name; }))
+        .range([0, ((barHeight - 1) * data.length) + (data.length - 2)]);
 
     chart.append("g")
         .attr("class", "y axis")
-        .call(d3.axisLeft(y).tickSize(0).tickPadding(5));
+        .call(
+            d3.axisLeft(y)
+                .tickSize(0)
+                .tickPadding(labelPad)
+        );
 
 })
 
