@@ -46,14 +46,17 @@
 <script type="text/javascript">
 
 function buildBarChart(config) {
+    // pull values from the config object
     var data = config.values;
     var metric = config.stat[0];
     var title = config.title[0];
 
+    // set display values
     var margin = {top: 20, right: 10, bottom: 20, left: 175}; // :TODO: set left margin dynamically based on label size
     var labelPad = 5;
     var barHeight = 25;
     var width = 500 - margin.left - margin.right;
+    var height = (barHeight * data.length) + margin.top + margin.bottom;
 
     // add the title
     d3.select("body")
@@ -62,8 +65,7 @@ function buildBarChart(config) {
         .style("width", width + margin.left + margin.right)
         .text(title)
 
-    var height = (barHeight * data.length) + margin.top + margin.bottom;
-
+    // add an svg object to hold the chart
     var chart = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -71,6 +73,7 @@ function buildBarChart(config) {
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    // draw the bars
     var x = d3.scaleLinear()
         .domain([0, d3.max(data, function(d) { return d.value; })])
         .range([0, width]);
@@ -98,6 +101,7 @@ function buildBarChart(config) {
             return d.value;
         });
 
+    // draw the labels
     var y = d3.scaleBand()
         .domain(data.map(function(d) { return d.name; }))
         .range([0, ((barHeight - 1) * data.length) + (data.length - 2)]);
