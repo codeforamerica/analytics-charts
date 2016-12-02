@@ -45,8 +45,8 @@ var barHeight = 25;
 var width = 500 - margin.left - margin.right;
 
 function buildBarChart(config) {
-    data = config.values;
-    metric = config.stat[0];
+    var data = config.values;
+    var metric = config.stat[0];
     var height = (barHeight * data.length) + margin.top + margin.bottom;
 
     var chart = d3.select("body").append("svg")
@@ -94,11 +94,28 @@ function buildBarChart(config) {
         );
 }
 
-// get the data from a local file and display the chart
-d3.json("data/sample-data.json", function(error, obj) {
-    if (error) throw error;
-    buildBarChart(obj)
-})
+var LOCAL = "local"
+var DEMO = "demo"
+var source = DEMO
+
+if (source == DEMO) {
+    var dataURL = "http://localhost:7056/ocpu/library/DemoJailBookingDashboard/R/jsonStaticCaseStatus/json"
+    var postData = {"jurisdiction" : "All Jurisdictions", "originatingAgency" : "All Agencies", "targetPopulationOnly" : "false", "measure" : "Population Count"}
+
+    d3.request(dataURL)
+        .header("Content-Type", "application/json")
+        .response(function(xhr) { return JSON.parse(xhr.responseText); })
+        .post(JSON.stringify(postData), buildBarChart);
+
+} else if (source == LOCAL) {
+    var filePath = "data/sample-data.json";
+
+    // get the data from a local file and display the chart
+    d3.json(filePath, function(error, obj) {
+        if (error) throw error;
+        buildBarChart(obj)
+    })
+}
 
 </script>
 
