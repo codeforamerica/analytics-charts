@@ -15,6 +15,12 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 <style>
+.charttitle {
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+}
+
 .chart rect {
     fill: #ff9900;
 }
@@ -39,14 +45,23 @@
 
 <script type="text/javascript">
 
-var margin = {top: 20, right: 10, bottom: 20, left: 175}; // :TODO: set left margin dynamically based on label size
-var labelPad = 5;
-var barHeight = 25;
-var width = 500 - margin.left - margin.right;
-
 function buildBarChart(config) {
     var data = config.values;
     var metric = config.stat[0];
+    var title = config.title[0];
+
+    var margin = {top: 20, right: 10, bottom: 20, left: 175}; // :TODO: set left margin dynamically based on label size
+    var labelPad = 5;
+    var barHeight = 25;
+    var width = 500 - margin.left - margin.right;
+
+    // add the title
+    d3.select("body")
+        .append("div")
+        .attr("class", "charttitle")
+        .style("width", width + margin.left + margin.right)
+        .text(title)
+
     var height = (barHeight * data.length) + margin.top + margin.bottom;
 
     var chart = d3.select("body").append("svg")
@@ -77,6 +92,8 @@ function buildBarChart(config) {
         .text(function(d) {
             if (metric == "percent") {
                 return d3.format(".1f")(d.value) + "%"
+            } else if (metric == "count") {
+                return d3.format(".0f")(d.value)
             }
             return d.value;
         });
@@ -100,7 +117,7 @@ var source = DEMO
 
 if (source == DEMO) {
     var dataURL = "http://localhost:7056/ocpu/library/DemoJailBookingDashboard/R/jsonStaticCaseStatus/json"
-    var postData = {"jurisdiction" : "All Jurisdictions", "originatingAgency" : "All Agencies", "targetPopulationOnly" : "false", "measure" : "Population Count"}
+    var postData = {"measure" : "Length of Stay", "jurisdiction" : "All Jurisdictions", "originatingAgency" : "All Agencies", "targetPopulationOnly" : "false"}
 
     d3.request(dataURL)
         .header("Content-Type", "application/json")
