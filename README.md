@@ -1,7 +1,7 @@
 # analytics-charts
 Exploratory D3 Chart Development for the OJBC Analytics Jail Booking Dashboard
 
-# Setup
+## Setup
 
 To see the chart(s), start a simple web server in the project directory.
 
@@ -13,6 +13,6 @@ To see the chart(s), start a simple web server in the project directory.
 
 Then load the appropriate URL in a browser, like `http://localhost:8000/`
 
-# Configuration
+## Configuration
 
 Configure where the chart gets its data by editing variables at the bottom of the [index.html](index.html) file.
