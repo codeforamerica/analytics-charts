@@ -111,26 +111,34 @@ function buildBarChart(config) {
         );
 }
 
-var LOCAL = "local"
-var DEMO = "demo"
-var source = DEMO
+// Choose where to pull data from
+var LOCAL = "local";
+var DEMO = "demo";
+var source = DEMO;
 
+// Pull data from an instance of the JailBookingDashboard
 if (source == DEMO) {
-    var dataURL = "http://localhost:7056/ocpu/library/DemoJailBookingDashboard/R/jsonStaticCaseStatus/json"
-    var postData = {"measure" : "Length of Stay", "jurisdiction" : "All Jurisdictions", "originatingAgency" : "All Agencies", "targetPopulationOnly" : "false"}
+    var dataURL = "http://localhost:7056/ocpu/library/DemoJailBookingDashboard/R/jsonStaticCaseStatus/json";
+    var postData = {
+        "measure" : "Rebooking Rate",
+        "jurisdiction" : "All Jurisdictions",
+        "originatingAgency" : "All Agencies",
+        "targetPopulationOnly" : "false"
+    };
 
     d3.request(dataURL)
         .header("Content-Type", "application/json")
         .response(function(xhr) { return JSON.parse(xhr.responseText); })
         .post(JSON.stringify(postData), buildBarChart);
 
+// Pull data from a local file
 } else if (source == LOCAL) {
     var filePath = "data/sample-data.json";
 
     // get the data from a local file and display the chart
     d3.json(filePath, function(error, obj) {
         if (error) throw error;
-        buildBarChart(obj)
+        buildBarChart(obj);
     })
 }
 
