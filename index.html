@@ -44,10 +44,9 @@ var labelPad = 5;
 var barHeight = 25;
 var width = 500 - margin.left - margin.right;
 
-d3.json("data/sample-data.json", function(error, obj) {
-    if (error) throw error;
-    data = obj.values;
-    metric = obj.stat[0];
+function buildBarChart(config) {
+    data = config.values;
+    metric = config.stat[0];
     var height = (barHeight * data.length) + margin.top + margin.bottom;
 
     var chart = d3.select("body").append("svg")
@@ -93,7 +92,12 @@ d3.json("data/sample-data.json", function(error, obj) {
                 .tickSize(0)
                 .tickPadding(labelPad)
         );
+}
 
+// get the data from a local file and display the chart
+d3.json("data/sample-data.json", function(error, obj) {
+    if (error) throw error;
+    buildBarChart(obj)
 })
 
 </script>
