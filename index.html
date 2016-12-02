@@ -61,7 +61,7 @@ function buildBarChart(config) {
         .range([0, width]);
 
     var bar = chart.selectAll("g")
-        .data(data)
+        .data(data.sort(function(a, b) { return b.value - a.value }))
       .enter().append("g")
         .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
 
